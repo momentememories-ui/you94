@@ -84,21 +84,28 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = "#ff8fa3";
-            // ✅ ใช้ฟอนต์ Prompt เหมือน UI
-            ctx.font = "bold 14px 'Prompt', sans-serif";
+            // ✅ ปรับขนาดฟอนต์ลดลงเหลือ 10px เพื่อไม่ให้ข้อความยาวจนล้นรูปทรงหัวใจ
+            ctx.font = "bold 10px 'Prompt', sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            let scale = Math.min(canvas.width / 45, canvas.height / 55); 
+            // ปรับ scale ของหัวใจให้สมดุลกับขนาดหน้าจอ
+            let scale = Math.min(canvas.width / 40, canvas.height / 50); 
+
+            // ข้อความที่จะวาด
+            const text = "เค้ารักเธอนะเตงเบ้บ";
+            // คำนวณความกว้างของข้อความเพื่อนำมาใช้หักลบตำแหน่งให้สมดุล
+            const textWidth = ctx.measureText(text).width;
 
             for (let i = 0; i < 60; i++) {
                 let angle = t + i * 0.2; 
                 let pos = heartFunction(angle);
 
-                let x = canvas.width / 2 + pos.x * scale;
-                let y = (canvas.height / 2) + pos.y * scale;
+                // ✅ หักลบความกว้างข้อความออกกึ่งกลาง (textWidth / 2) และขยับพิกัด X ชดเชยไปทางซ้ายเล็กน้อย เพื่อให้รูปทรงหัวใจสมมาตร
+                let x = (canvas.width / 2) + (pos.x * scale);
+                let y = (canvas.height / 2) + (pos.y * scale);
 
-                ctx.fillText("เค้ารักเธอนะเตงเบ้บ", x, y);
+                ctx.fillText(text, x, y);
             }
 
             t += 0.005; 
@@ -117,7 +124,7 @@
         window.addEventListener('click', playMusic);
         window.addEventListener('touchstart', playMusic);
 
-        // ✅ รอ font โหลดก่อนค่อยเริ่มวาด
+        // รอ font โหลดก่อนค่อยเริ่มวาด
         document.fonts.ready.then(() => {
             draw();
         });
